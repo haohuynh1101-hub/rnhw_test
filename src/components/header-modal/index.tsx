@@ -1,5 +1,5 @@
 import {useNavigation} from '@react-navigation/native';
-import {Box, HStack, Pressable, Text} from 'native-base';
+import {Box, CloseIcon, HStack, Pressable, Text} from 'native-base';
 import React from 'react';
 
 type Props = {
@@ -21,8 +21,7 @@ export const HeaderModal: React.FC<Props> = ({title}) => {
         h="56px"
         justifyContent="center"
         onPress={navigation.goBack}>
-        {/* <CloseIcon color="secondary.400" size="16px" /> */}
-        {/* <Ionicons name="md-checkmark-circle" size={32} color="green" /> */}
+        <CloseIcon color="blue.400" size="16px" />
       </Pressable>
 
       <Box flex={1}>
