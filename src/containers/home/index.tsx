@@ -1,35 +1,31 @@
 import React from 'react';
 import {Box, Text} from 'native-base';
-import {gql, useQuery} from '@apollo/client';
+import {useQuery} from '@apollo/client';
 import {FlatList} from 'react-native';
 import {ItemCountry} from './components';
-
-const GET_COUNTRIES = gql`
-  query {
-    countries {
-      name
-      native
-      emoji
-    }
-  }
-`;
-
-type ICountry = {
-  code: string;
-  name: string;
-  native: string;
-  emoji: string;
-};
+import {useNavigation} from '@react-navigation/native';
+import {GET_COUNTRIES} from '~/services';
+import {Loading} from '~/components';
+import {ICountry} from '~/services';
 
 type ICountries = {
   countries: ICountry[];
 };
 
 export const HomeContainer: React.FC = () => {
+  const navigation = useNavigation();
   const {loading, data} = useQuery<ICountries>(GET_COUNTRIES);
+
+  const handleClickItem = (code: string) => {
+    navigation.navigate('CountryDetail', {
+      code: code,
+    });
+  };
+
   if (loading) {
-    return <Text>Loading</Text>;
+    return <Loading />;
   }
+
   return (
     <Box safeAreaTop flex={1} bgColor="white">
       <Box p={4}>
@@ -44,9 +40,12 @@ export const HomeContainer: React.FC = () => {
           data={data?.countries}
           renderItem={({item}) => (
             <ItemCountry
+              key={item.code}
+              code={item.code}
               name={item.name}
               emoji={item.emoji}
               native={item.native}
+              onClickItem={handleClickItem}
             />
           )}
           maxToRenderPerBatch={10}

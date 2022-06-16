@@ -1,5 +1,9 @@
 export type AppParams = {
   ListCountry: undefined;
-  CountryDetail: undefined;
-  ContinentDetail: undefined;
+  CountryDetail: {
+    code: string;
+  };
+  ContinentDetail: {
+    code: string;
+  };
 };
