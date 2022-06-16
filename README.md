@@ -28,3 +28,25 @@ You took the role to develop a React Native app which has the following features
 - When user taps on a country on the continent screen, show the country screen again
 - When user visits [rnhw://country/:code](rnhw://country/:code), show country screen
 - When user visits [rnhw://continent/:code](rnhw://continent/:code), show continent screen.
+
+# Folder Directories
+- src
+  - components: contains UI can be reused
+  - constant: contains variables not be changed
+  - navigators: contains types and Stac Screens for App
+  - services: contains functions to call API (using Apollo)
+
+# Main Function
+- IOS
+  - Home Screen
+
+<img src="result/home.png" width="300" />
+
+<img src="result/country.png" width="300" />
+
+<img src="result/continent.png" width="300" />
+
+<img src="result/darkmode.png" width="300" />
+
+
+
