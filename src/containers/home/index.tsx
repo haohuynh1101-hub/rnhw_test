@@ -1,9 +1,9 @@
 import React from 'react';
-import {Box, Text} from 'native-base';
+import {Box, Button, HStack, Text} from 'native-base';
 import {useQuery} from '@apollo/client';
 import {FlatList} from 'react-native';
 import {ItemCountry} from './components';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import {GET_COUNTRIES} from '~/services';
 import {Loading} from '~/components';
 import {ICountry} from '~/services';
@@ -15,6 +15,7 @@ type ICountries = {
 export const HomeContainer: React.FC = () => {
   const navigation = useNavigation();
   const {loading, data} = useQuery<ICountries>(GET_COUNTRIES);
+  const {colors} = useTheme();
 
   const handleClickItem = (code: string) => {
     navigation.navigate('CountryDetail', {
@@ -28,10 +29,15 @@ export const HomeContainer: React.FC = () => {
 
   return (
     <Box safeAreaTop flex={1} bgColor="white">
+      <Box w="full" height={80} bgColor="blue.400" roundedBottomLeft="100px" />
       <Box p={4}>
-        <Text fontWeight="medium" fontSize={20} mb={4}>
-          List of countries
-        </Text>
+        <HStack alignItems="center">
+          <Text flex={1} fontWeight="medium" fontSize={20} mb={4}>
+            List of countries
+          </Text>
+
+          <Button>{colors.card}</Button>
+        </HStack>
 
         <FlatList
           showsHorizontalScrollIndicator={false}
@@ -48,8 +54,6 @@ export const HomeContainer: React.FC = () => {
               onClickItem={handleClickItem}
             />
           )}
-          maxToRenderPerBatch={10}
-          initialNumToRender={5}
         />
       </Box>
     </Box>
