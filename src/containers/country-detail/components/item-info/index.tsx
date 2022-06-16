@@ -1,3 +1,4 @@
+import {useTheme} from '@react-navigation/native';
 import {HStack, Pressable, Text} from 'native-base';
 import React from 'react';
 type Props = {
@@ -15,6 +16,7 @@ export const ItemInfo: React.FC<Props> = ({
   isContinent = false,
   onPressContinent,
 }) => {
+  const {colors} = useTheme();
   const handlePressContinent = () => {
     if (onPressContinent) {
       onPressContinent(code);
@@ -22,7 +24,9 @@ export const ItemInfo: React.FC<Props> = ({
   };
   return (
     <HStack alignItems="center">
-      <Text flex={1}>{title}</Text>
+      <Text flex={1} color={colors.text}>
+        {title}
+      </Text>
       {isContinent ? (
         <Pressable onPress={handlePressContinent}>
           <Text fontWeight="medium" fontSize="md" color="blue.400" underline>
@@ -30,7 +34,7 @@ export const ItemInfo: React.FC<Props> = ({
           </Text>
         </Pressable>
       ) : (
-        <Text fontWeight="medium" fontSize="md">
+        <Text fontWeight="medium" fontSize="md" color={colors.text}>
           {value}
         </Text>
       )}

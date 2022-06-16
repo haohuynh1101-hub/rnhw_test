@@ -1,3 +1,5 @@
+import {NavigatorScreenParams} from '@react-navigation/native';
+
 export type AppParams = {
   ListCountry: undefined;
   CountryDetail: {
@@ -6,4 +8,8 @@ export type AppParams = {
   ContinentDetail: {
     code: string;
   };
+};
+
+export type RootStackParamList = {
+  AppStack: NavigatorScreenParams<AppParams>;
 };

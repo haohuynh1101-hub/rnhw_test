@@ -1,3 +1,4 @@
+import {useTheme} from '@react-navigation/native';
 import {Box, HStack, Pressable, Text} from 'native-base';
 import React from 'react';
 
@@ -15,6 +16,8 @@ export const ItemCountry: React.FC<Props> = ({
   native,
   onClickItem,
 }) => {
+  const {colors} = useTheme();
+
   const onPress = () => {
     if (onClickItem) {
       onClickItem(code);
@@ -33,7 +36,9 @@ export const ItemCountry: React.FC<Props> = ({
         <Text fontSize={40}>{emoji}</Text>
 
         <Box flexDirection="column" ml={4}>
-          <Text fontWeight="semibold">{name}</Text>
+          <Text fontWeight="semibold" color={colors.text}>
+            {name}
+          </Text>
           <Text color="#9ca3af">{native}</Text>
         </Box>
       </HStack>

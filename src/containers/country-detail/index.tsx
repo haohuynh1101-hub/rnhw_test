@@ -1,7 +1,12 @@
 import React from 'react';
 import {Box, Text, VStack} from 'native-base';
 import {HeaderModal, Loading} from '~/components';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {
+  RouteProp,
+  useNavigation,
+  useRoute,
+  useTheme,
+} from '@react-navigation/native';
 import {AppParams} from '~/navigators';
 import {useQuery} from '@apollo/client';
 import {ItemInfo} from './components';
@@ -16,6 +21,7 @@ type IData = {
 export const CountryDetailContainer: React.FC = () => {
   const {params} = useRoute<RouteParams>();
   const navigation = useNavigation();
+  const {colors} = useTheme();
 
   const {loading, data} = useQuery<IData>(GET_COUNTRY, {
     variables: {code: params.code},
@@ -23,8 +29,11 @@ export const CountryDetailContainer: React.FC = () => {
 
   const handlePressContinent = (code: string | undefined) => {
     if (code) {
-      navigation.navigate('ContinentDetail', {
-        code,
+      navigation.navigate('AppStack', {
+        screen: 'ContinentDetail',
+        params: {
+          code,
+        },
       });
     }
   };
@@ -39,10 +48,15 @@ export const CountryDetailContainer: React.FC = () => {
 
       <Box p={4}>
         <VStack>
-          <Text textAlign="center" fontSize={56}>
+          <Text textAlign="center" fontSize={56} color={colors.text}>
             {data?.country.emoji}
           </Text>
-          <Text fontWeight="semibold" fontSize={20} textAlign="center" mb={4}>
+          <Text
+            fontWeight="semibold"
+            fontSize={20}
+            textAlign="center"
+            mb={4}
+            color={colors.text}>
             {data?.country.name}
           </Text>
 

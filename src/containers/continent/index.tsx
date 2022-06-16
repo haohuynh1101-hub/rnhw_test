@@ -2,7 +2,12 @@ import {Box, HStack, Pressable, Text, VStack} from 'native-base';
 import {HeaderModal, Loading} from '~/components';
 import React from 'react';
 import {AppParams} from '~/navigators';
-import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
+import {
+  RouteProp,
+  useNavigation,
+  useRoute,
+  useTheme,
+} from '@react-navigation/native';
 import {useQuery} from '@apollo/client';
 import {GET_CONTINENT, IContinent} from '~/services';
 import {ItemInfo} from '../country-detail/components';
@@ -17,6 +22,7 @@ type IData = {
 export const ContinentContainer: React.FC = () => {
   const {params} = useRoute<RouteParams>();
   const navigation = useNavigation();
+  const {colors} = useTheme();
 
   const {loading, data} = useQuery<IData>(GET_CONTINENT, {
     variables: {code: params.code},
@@ -24,8 +30,9 @@ export const ContinentContainer: React.FC = () => {
 
   const handlePressCountry = (code: string) => () => {
     if (code) {
-      navigation.navigate('CountryDetail', {
-        code,
+      navigation.navigate('AppStack', {
+        screen: 'CountryDetail',
+        params: {code},
       });
     }
   };
@@ -38,7 +45,11 @@ export const ContinentContainer: React.FC = () => {
       <HeaderModal title="Continent" />
 
       <Box p={4} flex={1}>
-        <Text fontWeight="semibold" fontSize={20} textAlign="center">
+        <Text
+          fontWeight="semibold"
+          fontSize={20}
+          textAlign="center"
+          color={colors.text}>
           {data?.continent.name}
         </Text>
 
@@ -46,7 +57,9 @@ export const ContinentContainer: React.FC = () => {
           <ItemInfo title="code" value={data?.continent.code} />
 
           <HStack alignItems="flex-start">
-            <Text flex={1}>countries</Text>
+            <Text flex={1} color={colors.text}>
+              countries
+            </Text>
 
             <FlatList
               showsHorizontalScrollIndicator={false}

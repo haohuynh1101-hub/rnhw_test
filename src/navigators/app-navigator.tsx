@@ -1,42 +1,28 @@
 import {
-  createNavigationContainerRef,
   DefaultTheme,
   DarkTheme,
   NavigationContainer,
+  useNavigationContainerRef,
 } from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import React from 'react';
-import {useColorScheme} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {EventRegister} from 'react-native-event-listeners';
 import {deepLinksConf, prefixes} from '~/constant/deeplink';
-import {
-  ContinentContainer,
-  CountryDetailContainer,
-  HomeContainer,
-} from '~/containers';
-import {AppParams} from './types';
 
-const Stack = createNativeStackNavigator<AppParams>();
+import {AppStack} from './stack-navigator';
+import {RootStackParamList} from './types';
 
-const AppStack = () => (
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+const RootStack = () => (
   <Stack.Navigator
     screenOptions={{
       headerShown: false,
-    }}
-    initialRouteName="ListCountry">
+    }}>
     <Stack.Screen
       options={{presentation: 'card'}}
-      name="ListCountry"
-      component={HomeContainer}
-    />
-    <Stack.Screen
-      options={{presentation: 'modal'}}
-      name="CountryDetail"
-      component={CountryDetailContainer}
-    />
-    <Stack.Screen
-      options={{presentation: 'modal'}}
-      name="ContinentDetail"
-      component={ContinentContainer}
+      name="AppStack"
+      component={AppStack}
     />
   </Stack.Navigator>
 );
@@ -45,22 +31,30 @@ interface NavigationProps
   extends Partial<React.ComponentProps<typeof NavigationContainer>> {}
 
 export const AppNavigator = (props: NavigationProps) => {
-  const navigationRef = createNavigationContainerRef<{}>();
+  const navigationRef = useNavigationContainerRef();
   const linking = {
     prefixes: prefixes,
     config: deepLinksConf,
   };
 
-  const schema = useColorScheme();
+  const [mode, setMode] = useState(false);
 
-  console.log(schema, '--schema');
+  useEffect(() => {
+    let eventListener = EventRegister.addEventListener('changeTheme', data => {
+      setMode(data);
+    });
+    return () => {
+      EventRegister.removeEventListener(eventListener);
+    };
+  });
+
   return (
     <NavigationContainer
       ref={navigationRef}
       linking={linking}
-      theme={schema !== 'dark' ? DarkTheme : DefaultTheme}
+      theme={mode ? DarkTheme : DefaultTheme}
       {...props}>
-      <AppStack />
+      <RootStack />
     </NavigationContainer>
   );
 };
